@@ -12,6 +12,7 @@ args <- commandArgs(trailingOnly=TRUE)
 # LoadLibraries -----------------------------------------------------------
 
 library(igraph)
+library(ggplot2)
 
 
 
@@ -50,7 +51,7 @@ if (is.na(args[1]) == TRUE){
 
 network <- read.table(file.path(hprdDir, filename), 
                       sep="\t", header=FALSE,  stringsAsFactors=FALSE, 
-                      na.strings = "null", as.is=c("V1","V2"), nrows=1000)
+                      na.strings = "null", as.is=c("V1","V2"))
 
 
 # CleanNetworkData --------------------------------------------------------
