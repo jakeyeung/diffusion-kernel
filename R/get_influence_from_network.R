@@ -46,12 +46,11 @@ if (is.na(args[1]) == TRUE){
 }
 
 
-
 # ReadTable ---------------------------------------------------------------
 
 network <- read.table(file.path(hprdDir, filename), 
                       sep="\t", header=FALSE,  stringsAsFactors=FALSE, 
-                      na.strings = "null", as.is=c("V1","V2"))
+                      na.strings = "null", as.is=c("V1","V2"), nrows=1000)
 
 
 # CleanNetworkData --------------------------------------------------------
@@ -86,7 +85,6 @@ colnames(influence_matrix_diffusion) <- colnames(A)
 rownames(influence_matrix_diffusion) <- rownames(A)
 
 
-
 # GetNormalizedInfluenceMatrix --------------------------------------------
 
 influence_matrix_diffusion.norm <- NormalizeInfluence(influence_matrix_diffusion)
@@ -98,7 +96,6 @@ sum_diffusion_matrix <- rowSums(influence_matrix_diffusion)
 sum_diffusion_matrix.norm <- rowSums(influence_matrix_diffusion.norm)
 
 
-
 # SaveDiffusionInfluence --------------------------------------------------
 
 write.table(signif(influence_matrix_diffusion, 3), 
@@ -106,8 +103,6 @@ write.table(signif(influence_matrix_diffusion, 3),
 
 write.table(signif(influence_matrix_diffusion.norm, 3), 
             file=file.path(textDir, 'diffusion_influence_hprd.txt'), sep='\t')
-
-
 
 
 # SaveTotalInfluence -------------------------------------------------------------
@@ -132,11 +127,15 @@ sum_diff_mat_table.norm <- cbind(sum_diff_mat_table.norm,
 
 # PlotInfluencevsNodeDegree -----------------------------------------------
 
-qplot(node_degree, total_influence, data=sum_diff_mat_table, alpha=I(1/50), 
-      xlab='Node Degree', ylab='Total Influence', 
-      main='Total Influence vs Node Degree') + scale_x_log10()
+p <- qplot(node_degree, total_influence, data=sum_diff_mat_table, alpha=I(1/50), 
+           xlab='Node Degree', ylab='Total Influence', 
+           main='Total Influence vs Node Degree') + scale_x_log10()
+ggsave(file=file.path(plotDir, 'tot_inf_vs_node_degree.pdf'), plot=p)
 
-qplot(node_degree, total_influence, data=sum_diff_mat_table, alpha=I(1/50), 
-      xlab='Node Degree', ylab='Normalized Total Influence', 
-      main='Normalized Total Influence vs Node Degree') + 
-    scale_x_log10()
+p <- qplot(node_degree, total_influence, data=sum_diff_mat_table, alpha=I(1/50), 
+           xlab='Node Degree', ylab='Normalized Total Influence', 
+           main='Normalized Total Influence vs Node Degree') + 
+        scale_x_log10()
+ggsave(file=file.path(plotDir, 'normalized_tot_inf_vs_node_degree.pdf'), plot=p)
+
+
