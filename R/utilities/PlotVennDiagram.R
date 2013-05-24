@@ -3,7 +3,18 @@
 # VennDiagramTwoLists.R
 # Plots diagram of two gene lists. 
 
+
+# Libraries ---------------------------------------------------------------
+
+library(venneuler)
+
+
+# Function ----------------------------------------------------------------
+
+
 PlotVennDiagram <- function(stringlist1, stringlist2, list1_name, list2_name){
+    # From stringlist1 and stringlist2, plot a venn diagram with list1_name
+    # and list2_name as the names of the two circles. 
     # Aggregate column names
     names_all <- list(stringlist1, stringlist2)
     names_sorted <- sort(unique(unlist(names_all)))
