@@ -58,7 +58,7 @@ if (is.na(args[1]) == TRUE){
 # ReadTable ---------------------------------------------------------------
 
 network <- read.table(file.path(hprdDir, filename), 
-                      sep="\t", header=FALSE,  stringsAsFactors=FALSE, 
+                      sep="\t", header=TRUE,  stringsAsFactors=FALSE, 
                       na.strings = "null", as.is=c("V1","V2"))
 
 
