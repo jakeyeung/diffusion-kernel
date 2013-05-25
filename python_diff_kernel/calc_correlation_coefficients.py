@@ -7,8 +7,7 @@ Created on 2013-05-23
 
 import os
 import sys
-from utilities import set_directories, influence
-# from scipy import stats
+from utilities import set_directories, influence, correlations
 
 
 # Set directories
@@ -42,14 +41,26 @@ if __name__ == '__main__':
     influence1.openfile()
     influence2.openfile()
     
+    # Define headers
+    headers1 = influence1.readnextline()
+    headers2 = influence2.readnextline()
+    
+    # Initialize dictionary
+    influence_correlations = correlations.correlations(headers1)
+    print influence_correlations.headers
+    
+    # Do pearson and spearman correlation
     while True:
         try:
-            print ('Influence 1 row: %s, length: %s' %(influence1.readnextline()[0:5], len(influence1.readnextline())))
-            print ('Influence 2 row: %s, length: %s' %(influence2.readnextline()[0:5], len(influence2.readnextline())))
+            row1 = influence1.readnextline()
+            row2 = influence2.readnextline()
+            influence_correlations.add_spearman_cor(row1, row2, rownames=True)
+            influence_correlations.add_pearson_cor(row1, row2, rownames=True)
             raw_input('Paused. Enter to continue...')
         except StopIteration:
             print('No more rows to iterate, breaking...')
             break
             
     influence1.closefile()
+    influence2.closefile()
     
