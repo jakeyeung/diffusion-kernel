@@ -15,10 +15,21 @@ library(venneuler)
 # CommandArgs -------------------------------------------------------------
 
 args <- commandArgs(trailingOnly=TRUE)
-# influence_filename1 <- args[1]
-# influence_filename2 <- args[2]
-influence_filename1 <- 'hprd_full_table3.txt'
-influence_filename2 <- 'HPRD_InfluenceGraph_HotNet.txt'
+
+commandargs_or_not <- readline('Use command args? y/n:')
+
+if (commandargs_or_not == 'y'){
+    influence_filename1 <- args[1]
+    influence_filename2 <- args[2]
+    influence_output_fname1 <- args[3]
+    influence_output_fname2 <- args[4]
+} else if (commandargs_or_not == 'n'){
+    print('Using predefined arguments instead...')
+    influence_filename1 <- 'hprd_full_table3.txt'
+    influence_filename2 <- 'HPRD_InfluenceGraph_HotNet.txt'
+    influence_output_fname1 <- 'hprd_full_table_uniques.txt'
+    influence_output_fname2 <- 'hotnet_full_table_uniques.txt'
+}
 
 
 # DefineDirectories -------------------------------------------------------
@@ -29,13 +40,6 @@ baseDir <- dirname(dirname(dirname(fileDir)))    # /random_walk_diffusion
 plotDir <- file.path(baseDir, 'output', 'hprd', 'plot_outputs')
 textDir <- file.path(baseDir, 'output', 'hprd', 'text_outputs')
 hprdDir <- file.path(baseDir, 'input', 'hprd_data')
-
-
-# DefineFilePaths ---------------------------------------------------------
-
-influence_path1 <- file.path(textDir, influence_filename1)
-influence_path2 <- file.path(textDir, influence_filename2)
-
 
 
 # DefineConstants ---------------------------------------------------------
@@ -60,9 +64,11 @@ source(file.path(sourceDir, 'PlotVennDiagram.R'))
 # ReadFiles ---------------------------------------------------------------
 
 # Read influence file that was output from get_influence_from_network.R
-influence_table1 <- read.table(influence_path1, header=TRUE, sep='\t', nrows=10)
+influence_table1 <- read.table(file.path(textDir, influence_filename1), 
+                               header=TRUE, sep='\t')
 # Read influenec file that was output by hotnet (requires row.names=1)
-influence_table2 <- read.table(influence_path2, header=TRUE, sep='\t', nrows=10, row.names=1)
+influence_table2 <- read.table(file.path(textDir, influence_filename2), 
+                               header=TRUE, sep='\t', row.names=1)
 
 # Peak
 jpeek(influence_table1)
@@ -108,19 +114,17 @@ common_genes2_index <- which(gene_names2 %in% gene_names1)
 common_gene_names <- gene_names1[common_genes1_index]
 
 # Reorder influence matrices
-# By row
-influence_table1.common <- influence_table1[, common_gene_names]
-# By columns
-influence_table1.common <- influence_table1.common[common_gene_names, ]
-# By row
-influence_table2.common <- influence_table2[, common_gene_names]
-# By columns
-influence_table2.common <- influence_table2[common_gene_names, ]
+# By row and columns
+influence_table1.common <- influence_table1[common_gene_names, common_gene_names]
+influence_table2.common <- influence_table2[common_gene_names, common_gene_names]
 
 
 # WriteReorderedMatrices --------------------------------------------------
 
-
+write.table(influence_table1.common, file=file.path(textDir, influence_output_fname1),
+            quote=FALSE, sep='\t', row.names=TRUE, col.names=TRUE)
+write.table(influence_table2.common, file=file.path(textDir, influence_output_fname2),
+            quote=FALSE, sep='\t', row.names=TRUE, col.names=TRUE)
 
 
 
