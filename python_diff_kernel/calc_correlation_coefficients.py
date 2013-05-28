@@ -7,7 +7,7 @@ Created on 2013-05-23
 
 import os
 import sys
-from utilities import set_directories, influence, correlations
+from utilities import set_directories, influence, correlations, plot_correlations
 
 
 # Set directories
@@ -45,6 +45,19 @@ if __name__ == '__main__':
     headers1 = influence1.readnextline()
     headers2 = influence2.readnextline()
     
+    print len(headers1)
+    print len(headers2)
+    
+    # Check they're equal
+    if headers1 == headers2:
+        print 'Headers are equal.'
+    else:
+        print 'Headers are not equal, exiting...'
+        # print headers1
+        # print '\n'
+        # print headers2
+        sys.exit()
+    
     # Initialize dictionary
     influence_correlations = correlations.correlations(headers1)
     print influence_correlations.headers
@@ -56,11 +69,27 @@ if __name__ == '__main__':
             row2 = influence2.readnextline()
             influence_correlations.add_spearman_cor(row1, row2, rownames=True)
             influence_correlations.add_pearson_cor(row1, row2, rownames=True)
-            raw_input('Paused. Enter to continue...')
         except StopIteration:
             print('No more rows to iterate, breaking...')
             break
-            
     influence1.closefile()
     influence2.closefile()
     
+    print influence_correlations.pearson_dic
+    print influence_correlations.spearman_dic
+    # Plot results
+    plot_correlations.plot_correlations(influence_correlations.pearson_dic, 
+                                        influence_correlations.spearman_dic,
+                                        xlab='Spearman Correlation',
+                                        ylab='Pearson Correlation',
+                                        jtitle='Correlation Plot',
+                                        tuple_i = 0)
+    plot_correlations.plot_correlations(influence_correlations.pearson_dic, 
+                                        influence_correlations.spearman_dic,
+                                        xlab='Spearman PVal',
+                                        ylab='Pearson PVal',
+                                        jtitle='PVal of Correlations Plot',
+                                        tuple_i = 1)
+    
+    
+    # Plot spearman and 

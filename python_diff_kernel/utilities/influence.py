@@ -20,8 +20,8 @@ class diffusion_influence(object):
         self.rowsread = 0
     
     def openfile(self):
-        csvfile = open(self.path, 'rb')
-        self.reader = csv.reader(csvfile, delimiter='\t')
+        self.csvfile = open(self.path, 'rb')
+        self.reader = csv.reader(self.csvfile, delimiter='\t')
         return self.reader
     
     def readnextline(self):
@@ -33,7 +33,7 @@ class diffusion_influence(object):
         Should only be initiated after the file has opened (readnextline)
         has been called. Closes the file to tie up loose ends.
         '''
-        self.reader.close()
+        self.csvfile.close()
         
         
         
