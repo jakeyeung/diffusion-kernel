@@ -8,7 +8,7 @@
 
 # LoadLibraries -----------------------------------------------------------
 
-library(venneuler)
+# library(venneuler)
 # to install use command:
 # install.packages('venneuler')
 
@@ -16,14 +16,12 @@ library(venneuler)
 
 args <- commandArgs(trailingOnly=TRUE)
 
-commandargs_or_not <- readline('Use command args? y/n:')
-
-if (commandargs_or_not == 'y'){
+if (length(args)==4){
     influence_filename1 <- args[1]
     influence_filename2 <- args[2]
     influence_output_fname1 <- args[3]
     influence_output_fname2 <- args[4]
-} else if (commandargs_or_not == 'n'){
+} else{
     print('Using predefined arguments instead...')
     influence_filename1 <- 'hprd_full_table3.txt'
     influence_filename2 <- 'HPRD_InfluenceGraph_HotNet.txt'
@@ -58,7 +56,7 @@ jpeek <- function(df){
     print(df[1:5, 1:5])
 }
 
-source(file.path(sourceDir, 'PlotVennDiagram.R'))
+# source(file.path(sourceDir, 'PlotVennDiagram.R'))
 
 
 # ReadFiles ---------------------------------------------------------------
