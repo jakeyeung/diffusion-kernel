@@ -16,8 +16,8 @@ GetAvgCommuteTime <- function(D, L, initial.node, end.node){
     # AvgCommuteTime: defined as average number of steps that a random walker,
     # starting in node i, will take to enter node k for the first time and
     # go back to node i.
-    AvgCommuteTime <- sum(diag(D.hub)) * (L[initial.node, initial.node] + 
-                                              L[end.node, end.node] - 2 * L[initial.node, end.node])
+    AvgCommuteTime <- sum(diag(D)) * (L[initial.node, initial.node] + 
+                                      L[end.node, end.node] - 2 * L[initial.node, end.node])
     if(abs(AvgCommuteTime) < 1){
         #Round down to zero if steps are less than 1
         AvgCommuteTime = 0
