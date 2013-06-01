@@ -3,13 +3,14 @@
 # get_influence_hprd_network.R
 # Uses diffusion model to analyze HPRD network
 # Usage in commandline: 
-# Rscript get_influence_hprd_network.R HPRD_network_filename.txt table_output_fname.txt influence_list.txt plotfname.pdf
+# Rscript get_influence_hprd_network.R hprd_data/HPRD_network_filename.txt table_output_fname.txt influence_list.txt plotfname.pdf
 
 
 # SetCommandArgs ----------------------------------------------------------
 
 args <- commandArgs(trailingOnly=TRUE)
 filename <- args[1]
+# Filename is stored in /input/
 diff_full_table_fname <- args[2]
 diff_total_fname <- args[3]
 influence_degree_plot_fname <- args[4]
@@ -31,7 +32,7 @@ sourceDir <- file.path(fileDir, 'utilities')
 baseDir <- dirname(dirname(dirname(fileDir)))    # /random_walk_diffusion
 plotDir <- file.path(baseDir, 'output', 'hprd', 'plot_outputs')
 textDir <- file.path(baseDir, 'output', 'hprd', 'text_outputs')
-hprdDir <- file.path(baseDir, 'input', 'hprd_data')
+inputfileDir <- file.path(baseDir, 'input')
 
 
 # SourceFunctions ---------------------------------------------------------
@@ -57,7 +58,7 @@ if (is.na(args[1]) == TRUE){
 
 # ReadTable ---------------------------------------------------------------
 
-network <- read.table(file.path(hprdDir, filename), 
+network <- read.table(file.path(inputfileDir, filename), 
                       sep="\t", header=TRUE,  stringsAsFactors=FALSE, 
                       na.strings = "null", as.is=c("V1","V2"))
 
