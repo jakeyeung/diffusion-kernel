@@ -37,6 +37,7 @@ source(file=file.path(sourceDir, 'GetSteadyStateDiffusion.R'))
 # Random Walk Functions
 source(file=file.path(sourceDir, 'GetPseudoInverseRandomWalk.R'))
 source(file=file.path(sourceDir, 'GetAvgFirstPassageTime.R'))
+source(file=file.path(sourceDir, 'GetAvgCommuteTime.R'))
 
 # Plot Functions
 source(file=file.path(sourceDir, 'plotInfluence.R'))
@@ -93,10 +94,14 @@ influence_matrix_randwalk <- diag(0, nrow=nrow(L_inv_pseudo))    # Initialize
 starttime <- proc.time()
 for(i in 1:nrow(L_inv_pseudo)){
   for(j in 1:nrow(L_inv_pseudo)){
-    influence_matrix_randwalk[i, j] <- GetAvgFirstPassageTime(D,
-                                                              L_inv_pseudo,
-                                                              i,
-                                                              j)
+#     influence_matrix_randwalk[i, j] <- GetAvgFirstPassageTime(D,
+#                                                               L_inv_pseudo,
+#                                                               i,
+#                                                               j)
+    influence_matrix_randwalk[i, j] <- GetAvgCommuteTime(D,
+                                                          L_inv_pseudo,
+                                                          i,
+                                                          j)
   }
   print(c('All random walk times computed for node ', i))
 }
