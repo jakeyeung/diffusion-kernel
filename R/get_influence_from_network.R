@@ -60,7 +60,7 @@ if (is.na(args[1]) == TRUE){
 
 network <- read.table(file.path(inputfileDir, filename), 
                       sep="\t", header=TRUE,  stringsAsFactors=FALSE, 
-                      na.strings = "null", as.is=c("V1","V2"))
+                      na.strings = "null")
 
 
 # CleanNetworkData --------------------------------------------------------
