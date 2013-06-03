@@ -47,8 +47,11 @@ source(file.path(sourceDir, 'NormalizeInfluence.R'))
 
 gamma <- 1    # Rate of "sink" in each node for diffusion model.
 
+
+# POTENTIAL BUG HERE SINCE INPUT FOLDER IS NEEDED IN FILENAME HAS
+# NOT BEEN RUN TO SEE IF THIS DEFAULT FILENAME WORKS. 
 if (is.na(args[1]) == TRUE){
-    filename <- 'HPRD_noNA.txt'
+    filename <- 'input/HPRD_noNA.txt'
     print(paste('No argument specified, using', 
                 filename, 'as network filename'))
 } else{
