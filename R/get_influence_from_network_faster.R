@@ -30,13 +30,13 @@ inputfileDir <- file.path(baseDir, 'input')
 
 source(file.path(sourceDir, 'GetGraphFromDf.R'))
 source(file.path(sourceDir, 'invert_shifted_laplacian2.R'))
+source(file.path(sourceDir, 'NormalizeInfluence.R'))
 
 # Set constants -----------------------------------------------------------
 
 gamma <- 1    # Rate of "sink" in each node for diffusion model.
 
 # ReadTable ---------------------------------------------------------------
-
 network <- read.table(file.path(inputfileDir, filename), 
                       sep="\t", header=TRUE,  stringsAsFactors=FALSE, 
                       na.strings = "null")
@@ -59,5 +59,38 @@ L_shifted_inv <- invert_shifted_laplacian2(L, gamma, remove_diags=TRUE,
 
 # SaveDiffusionInfluence --------------------------------------------------
 
-write.table(signif(L_shifted_inv, 3), 
+# write.table(signif(as.matrix(L_shifted_inv), 3), 
+#             file=file.path(textDir, diff_full_table_fname), sep='\t')
+
+write.table(as.matrix(L_shifted_inv), 
             file=file.path(textDir, diff_full_table_fname), sep='\t')
+
+# writeMM(L_shifted_inv, 
+#         file=file.path(textDir, diff_full_table_fname), sep='\t')
+
+# TotalInfluenceMatrix ------------------------------------------------
+
+sum_diffusion_matrix <- rowSums(L_shifted_inv)
+
+# TotalInfluence -------------------------------------------------------------
+
+sum_diff_mat_table <- as.data.frame(sum_diffusion_matrix)
+rm(sum_diffusion_matrix)
+colnames(sum_diff_mat_table) <- 'total_influence'
+
+
+# AddNodeDegreesToTable ------------------------------------------
+
+sum_diff_mat_table <- cbind(sum_diff_mat_table, 'node_degree'=degree(g))
+
+# SaveTotalInfluenceNodeDegreeTable ---------------------------------------
+
+write.table(sum_diff_mat_table, 
+            file=file.path(textDir, diff_total_fname), sep='\t')
+
+# PlotInfluencevsNodeDegree(sanitycheck) -----------------------------------------------
+
+p <- qplot(node_degree, total_influence, data=sum_diff_mat_table, alpha=I(1/50), 
+           xlab='Node Degree', ylab='Total Influence', 
+           main='Total Influence vs Node Degree') + scale_x_log10()
+ggsave(file=file.path(plotDir, influence_degree_plot_fname), plot=p)
