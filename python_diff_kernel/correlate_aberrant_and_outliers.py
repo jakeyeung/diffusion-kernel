@@ -91,8 +91,6 @@ def get_influence(influence_fullpath, row_genes, col_genes, output_fullpath):
                     sys.exit()
             influence_on_cgenes = []
             for i in col_indices:
-                print col_genes
-                raw_input(current_row)
                 influence_on_cgenes.append(current_row[i])
             influence.writenext([current_gene] + influence_on_cgenes)
         print('%s rows read, %s written.' %(influence.readrowcount, 
