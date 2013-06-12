@@ -7,3 +7,5 @@ diffusion-kernel.Rproj
 *.pyc
 *.project
 *.pydevproject
+*.sh
+*.txt
