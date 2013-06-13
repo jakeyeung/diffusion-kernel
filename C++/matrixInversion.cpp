@@ -1,3 +1,4 @@
+#include <cmath>
 #define EPS 1e-10
 
 bool invertInPlace( double ** const A, int n ) {
